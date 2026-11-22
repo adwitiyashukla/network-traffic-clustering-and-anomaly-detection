@@ -1,0 +1,63 @@
+[data]
+train_url = "https://raw.githubusercontent.com/Nir-J/ML-Projects/master/UNSW-Network_Packet_Classification/UNSW_NB15_training-set.csv"
+test_url = "https://raw.githubusercontent.com/Nir-J/ML-Projects/master/UNSW-Network_Packet_Classification/UNSW_NB15_testing-set.csv"
+cache_dir = "data"
+train_file = "UNSW_NB15_training-set.csv"
+test_file = "UNSW_NB15_testing-set.csv"
+download_timeout = 180
+expected_columns = 45
+
+[features]
+id_columns = ["id"]
+label_column = "label"
+category_column = "attack_cat"
+normal_category = "Normal"
+categorical_columns = ["proto", "service", "state"]
+rare_category_min_count = 300
+rare_category_name = "other"
+skew_threshold = 2.0
+variance_threshold = 1e-8
+clip_scaled_absolute = 20.0
+pca_components = 0
+pca_whiten = false
+
+[splits]
+random_seed = 7
+reference_size = 40000
+evaluation_normal_size = 20000
+evaluation_attack_rates = [0.01, 0.05, 0.1]
+reference_contamination_rates = [0.0, 0.01, 0.05, 0.1]
+primary_attack_rate = 0.05
+include_natural_rate = true
+
+[cluster]
+kmeans_k_grid = [4, 6, 8, 10, 12, 16, 20]
+kmeans_n_init = 5
+kmeans_max_iter = 300
+silhouette_sample_size = 5000
+dbscan_eps = 1.5
+dbscan_min_samples = 25
+dbscan_sample_size = 20000
+gmm_components = 8
+gmm_covariance_type = "full"
+gmm_reg_covar = 0.0001
+
+[lof]
+n_neighbors = 20
+block_size = 1024
+fit_sample_size = 20000
+deduplicate = true
+
+[iforest]
+n_trees = 150
+subsample_size = 256
+random_seed = 7
+
+[ensemble]
+members = ["lof", "iforest", "cluster_distance", "gmm_nll"]
+
+[evaluate]
+precision_at_k = [50, 100, 500, 1000]
+fpr_grid = [0.01, 0.05, 0.1]
+verification_sample_size = 5000
+output_dir = "results"
