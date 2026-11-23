@@ -160,8 +160,8 @@ python main.py download
 python main.py run
 ```
 
-The full run takes a few minutes and writes `summary.json` plus four CSV files into
-`results/`. Tests:
+The full run takes about seven minutes on my laptop and writes `summary.json` plus four
+CSV files into `results/`. Tests:
 
 ```
 python -m pytest tests -q
